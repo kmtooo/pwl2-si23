@@ -11,17 +11,14 @@ class SupplierController extends Controller
     /**
      * index
      * 
-     * @return void
+     * @return view
      */
     public function index() : view
     {
 
-        $supplier = new Supplier;
-        $suppliers = $supplier->get_supplier()
-                            ->latest()
-                            ->paginate(10);
+       $supplier = Supplier::paginate(10);
 
         //render view with products
-        return view('supplier.index', compact('supplier'));
+        return view('suppliers.index', compact('supplier'));
 }
 }
