@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transaksi;
+use App\Models\Transaction;  // Pastikan penamaan model yang benar
 use Illuminate\View\View;
 
-class TransaksiController extends Controller
+class TransactionController extends Controller
 {
     /**
      * index
-     * 
-     * @return void
+     *
+     * @return View
      */
-    public function index() : view
+    public function index() : View
     {
+        $transaksi_penjualan = new Transaction;
+        $data = $transaksi_penjualan->get_transaction()->latest()->paginate(10);
+             
+        foreach ($data as $key => $value) {
+            $data[$key]['total_harga_'] = $value['jumlah_pembelian'] * $value['price'];
+        }
 
-        $transaksi = new Transaksi;
-        $transaksi = $transaksi->get_transaksi()
-                            ->latest()
-                            ->paginate(10);
+        return view('transaction.index', compact('data'));
+    }
+}
 
-        //render view with products
-        return view('transaksi.index', compact('transaksi'));
-}
-}
+
